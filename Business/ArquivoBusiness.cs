@@ -1,28 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 using Demo.API.Files.Interfaces;
+using Demo.API.Files.Views;
+using System;
 
 namespace Demo.API.Files.Business
 {
     public class ArquivoBusiness: IArquivoBusiness
     {
         private readonly string _filePathDefault;
-        
         public ArquivoBusiness(IConfiguration configuration)
         {
             _filePathDefault = configuration.GetConnectionString("PathFilesDefault");
         }
 
-        public async Task<string> Salvar( List<IFormFile> arquivos )
+        public async Task<StatusView> Salvar( List<IFormFile> arquivos )
         {
-            
-          
-            
+            StatusView status = new();
+            status.Escopo = "Upload de Arquivos";
+            status.Camada = "Business";
 
             foreach (var formFile in arquivos)
             {
@@ -42,7 +41,10 @@ namespace Demo.API.Files.Business
                 }
             }
 
-            return "ok";
+            status.IsOk = false;
+            status.Message = "Uplad de arquivo(s) realizado com sucesso!";
+
+            return status;
         }
 
     }
