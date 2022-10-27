@@ -23,6 +23,14 @@ namespace Demo.API.Files.Business
             status.Escopo = "Upload de Arquivos";
             status.Camada = "Business";
 
+            if (arquivos.Count < 1)
+            {
+                status.IsOk = false;
+                status.Message = "Nenhum arquivo recebido!";
+
+                return status;
+            }
+
             foreach (var formFile in arquivos)
             {
                 if (formFile.Length > 0)
